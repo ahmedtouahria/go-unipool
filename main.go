@@ -1,4 +1,4 @@
-package unipool
+package main
 
 import (
 	"context"
@@ -7,6 +7,8 @@ import (
 	"math/big"
 	"strings"
 
+	"os"
+	unipool "github.com/ahmedtouahria/go-unipool/unipool"
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -15,13 +17,13 @@ import (
 )
 
 // Replace this with the actual ABI of your Unipool contract
-var unipoolABI = `[...]`
+var unipoolABI = unipool.UnipoolABI
 
 // UnipoolContract represents the contract interface.
 type UnipoolContract struct {
-	client           *ethclient.Client
-	contract         *abi.ABI
-	contractAddress  common.Address
+	client          *ethclient.Client
+	contract        *abi.ABI
+	contractAddress common.Address
 }
 
 // NewUnipoolContract creates a new instance of the UnipoolContract.
@@ -34,9 +36,9 @@ func NewUnipoolContract(client *ethclient.Client, contractAddress string) (*Unip
 	address := common.HexToAddress(contractAddress)
 
 	return &UnipoolContract{
-		client:           client,
-		contract:         &contractABI,
-		contractAddress:  address,
+		client:          client,
+		contract:        &contractABI,
+		contractAddress: address,
 	}, nil
 }
 
@@ -97,6 +99,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Reserve0: %v\n", reserve0)
-	fmt.Printf("Reserve1: %v\n", reserve1)
+	_, err = fmt.Printf("Reserve0: %v\n", reserve0)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Fprintf(os.Stdout, "Reserve1: %v\n", []any{reserve1}...)
 }
