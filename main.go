@@ -6,9 +6,8 @@ import (
 	"log"
 	"math/big"
 	"strings"
-
 	"os"
-	unipool "github.com/ahmedtouahria/go-unipool/unipool"
+	 d "github.com/ahmedtouahria/go-unipool/unipool"
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -17,7 +16,7 @@ import (
 )
 
 // Replace this with the actual ABI of your Unipool contract
-var unipoolABI = unipool.UnipoolABI
+var unipoolABI = d.UnipoolABI
 
 // UnipoolContract represents the contract interface.
 type UnipoolContract struct {
