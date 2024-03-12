@@ -7,7 +7,7 @@ import (
 	"math/big"
 	"strings"
 	"os"
-	 d "github.com/ahmedtouahria/go-unipool/unipool"
+	unipool "github.com/ahmedtouahria/go-unipool/unipool"
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
@@ -16,7 +16,7 @@ import (
 )
 
 // Replace this with the actual ABI of your Unipool contract
-var unipoolABI = d.UnipoolABI
+var unipoolABI = unipool.UnipoolABI
 
 // UnipoolContract represents the contract interface.
 type UnipoolContract struct {
@@ -79,14 +79,14 @@ func (u *UnipoolContract) GetReserves() (*big.Int, *big.Int, error) {
 
 func main() {
 	// Replace with your Ethereum node URL
-	nodeURL := "http://localhost:8545"
+	nodeURL := "https://eth.public-rpc.com"
 	client, err := rpc.Dial(nodeURL)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Replace with the actual Unipool contract address
-	contractAddress := "0x1234567890123456789012345678901234567890"
+	contractAddress := "0xC75650fe4D14017b1e12341A97721D5ec51D5340"
 	unipoolContract, err := NewUnipoolContract(ethclient.NewClient(client), contractAddress)
 	if err != nil {
 		log.Fatal(err)
@@ -102,5 +102,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Fprintf(os.Stdout, "Reserve1: %v\n", []any{reserve1}...)
+	_, err = fmt.Fprintf(os.Stdout, "Reserve1: %v\n", []any{reserve1}...)
+	if err != nil {
+		panic(err)
+	}
 }
