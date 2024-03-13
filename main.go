@@ -3,13 +3,11 @@ package main
 import (
 	"fmt"
 	"log"
-	"os"
+
 	unipool "github.com/ahmedtouahria/go-unipool/unipool"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
-
-
 
 func main() {
 	// Replace with your Ethereum node URL
@@ -20,7 +18,7 @@ func main() {
 	}
 
 	// Replace with the actual Unipool contract address
-	contractAddress := common.HexToAddress("0xC75650fe4D14017b1e12341A97721D5ec51D5340")
+	contractAddress := common.HexToAddress("0xd3d2e2692501a5c9ca623199d38826e513033a17")
 	unipoolContract, err := unipool.NewUnipool(contractAddress, client)
 	if err != nil {
 		log.Fatal(err)
@@ -32,12 +30,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	_, err = fmt.Printf("Reserve0: %v\n", reserves.Reserve0)
-	if err != nil {
-		panic(err)
-	}
-	_, err = fmt.Fprintf(os.Stdout, "Reserve1: %v\n", []any{reserves.Reserve1}...)
-	if err != nil {
-		panic(err)
-	}
+	fmt.Printf("reserve 0 : %v, reserver 1 : %v \n", reserves.Reserve0, reserves.Reserve1)
 }
