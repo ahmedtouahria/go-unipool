@@ -6,10 +6,11 @@ import (
 	"log"
 	"math/big"
 
-	quote_p"github.com/ahmedtouahria/go-unipool/quote"
+	quote_p "github.com/ahmedtouahria/go-unipool/quote"
 	unipool "github.com/ahmedtouahria/go-unipool/unipool"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+	//"github.com/mmcloughlin/addchain/internal/bigint"
 )
 
 
@@ -62,11 +63,19 @@ func main() {
 	} else {
 		fmt.Println("Neither token represents ETH")
 	}
-
+	totalSuply,err := unipoolContract.TotalSupply(nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	UsdUnitPrice,err:= quote_p.GetETHPriceInUSD()
+	if err != nil {
+		log.Fatal(err)
+	}
 	// Divide tokenEthReserve by 10^18
 	divisor := new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)
 	tokenEthReserveHumanReadable := new(big.Int).Div(tokenEthReserve, divisor)
-
+	//in usd
+	tokenEthReserveHumanReadableUsd := new(big.Int).Mul(tokenEthReserveHumanReadable,big.NewInt(int64(UsdUnitPrice)))
 	minimumLiquidity, err := unipoolContract.MINIMUMLIQUIDITY(nil)
 	if err != nil {
 		log.Fatal(err)
@@ -75,18 +84,23 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	usd,err:= quote_p.GetETHPriceInUSD()
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	actualGasPrice, _ := client.SuggestGasPrice(context.Background())
 	quote := quote_p.GetQuote(tokenIn, tokenOut, "100000000000000000")
+
 	fmt.Println("Minimum Minimum Liquidity:", minimumLiquidity)
+	fmt.Println("TotalSupply:",totalSuply)
+
 	fmt.Println("Token name:", name)
-	fmt.Println("Token Liquidity:", tokenEthReserveHumanReadable)
+	fmt.Println("Token Liquidity ETH:", tokenEthReserveHumanReadable,"eth")
+	fmt.Println("Token Liquidity USD:", tokenEthReserveHumanReadableUsd,"$")
+
 	fmt.Println("Actual gas price:", actualGasPrice)
 	fmt.Println("Avg gas price for a small tx:", quote.Quote.GasUseEstimate)
 	fmt.Println("Avg gas price for a small tx usd:", quote.Quote.GasUseEstimateUSD)
-	fmt.Println("1ETH =", usd, "usd")
+	fmt.Println("1ETH =", UsdUnitPrice, "usd")
 
 }
