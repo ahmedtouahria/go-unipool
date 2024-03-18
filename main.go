@@ -67,5 +67,5 @@ func main() {
 
 	fmt.Println("Minimum Minimum Liquidity:", minimumLiquidity)
 	fmt.Println("Token name:", name)
-	fmt.Println("Token Liquidity:", tokenEthReserveBig)
+	fmt.Println("Token Liquidity:", tokenEthReserveHumanReadable)
 }
