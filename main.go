@@ -10,7 +10,7 @@ import (
 	unipool "github.com/ahmedtouahria/go-unipool/unipool"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
-	//"github.com/mmcloughlin/addchain/internal/bigint"
+
 )
 
 
@@ -84,10 +84,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	actualGasPrice, _ := client.SuggestGasPrice(context.Background())
 	quote := quote_p.GetQuote(tokenIn, tokenOut, "100000000000000000")
 
