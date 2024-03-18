@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	var tokenEthReserve int64 = 0 // Renamed to avoid conflict
+	var tokenEthReserve *big.Int
 
 	nodeURL := "https://eth.public-rpc.com"
 	client, err := ethclient.Dial(nodeURL)
@@ -44,18 +44,17 @@ func main() {
 	}
 	if token0 == ethTokenAddress {
 		fmt.Println("Token 0 represents ETH == ", reserves.Reserve0)
-		tokenEthReserve = reserves.Reserve0.Int64()
+		tokenEthReserve = reserves.Reserve0
 	} else if token1 == ethTokenAddress {
 		fmt.Println("Token 1 represents ETH")
-		tokenEthReserve = reserves.Reserve1.Int64()
+		tokenEthReserve = reserves.Reserve1
 	} else {
 		fmt.Println("Neither token represents ETH")
 	}
 
 	// Divide tokenEthReserve by 10^18
-	tokenEthReserveBig := big.NewInt(tokenEthReserve)
 	divisor := new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)
-	tokenEthReserveBig.Div(tokenEthReserveBig, divisor)
+	tokenEthReserveHumanReadable := new(big.Int).Div(tokenEthReserve, divisor)
 
 	minimumLiquidity, err := unipoolContract.MINIMUMLIQUIDITY(nil)
 	if err != nil {
