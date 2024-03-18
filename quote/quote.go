@@ -1,13 +1,12 @@
 package quote
+
 import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
-
-
 )
 
 const chain int32 = 1
@@ -190,7 +189,7 @@ func GetQuote(tokenIn string, tokenOut string, amount string) *Quote {
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println("Error reading response body:", err)
 		return nil

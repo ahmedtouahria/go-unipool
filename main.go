@@ -6,7 +6,7 @@ import (
 	"log"
 	"math/big"
 
-	"github.com/ahmedtouahria/go-unipool/quote"
+	quote_p"github.com/ahmedtouahria/go-unipool/quote"
 	unipool "github.com/ahmedtouahria/go-unipool/unipool"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -75,12 +75,18 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	usd,err:= quote_p.GetETHPriceInUSD()
+	if err != nil {
+		log.Fatal(err)
+	}
 	actualGasPrice, _ := client.SuggestGasPrice(context.Background())
-	quote := quote.GetQuote(tokenIn, tokenOut, "100000000000000000")
+	quote := quote_p.GetQuote(tokenIn, tokenOut, "100000000000000000")
 	fmt.Println("Minimum Minimum Liquidity:", minimumLiquidity)
 	fmt.Println("Token name:", name)
 	fmt.Println("Token Liquidity:", tokenEthReserveHumanReadable)
 	fmt.Println("Actual gas price:", actualGasPrice)
 	fmt.Println("Avg gas price for a small tx:", quote.Quote.GasUseEstimate)
 	fmt.Println("Avg gas price for a small tx usd:", quote.Quote.GasUseEstimateUSD)
+	fmt.Println("1ETH =", usd, "usd")
+
 }
