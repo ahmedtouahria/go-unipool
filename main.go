@@ -64,7 +64,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	actualGasPrice, _ := client.SuggestGasPrice(context.Background())
 	fmt.Println("Minimum Minimum Liquidity:", minimumLiquidity)
 	fmt.Println("Token name:", name)
 	fmt.Println("Token Liquidity:", tokenEthReserveHumanReadable)
