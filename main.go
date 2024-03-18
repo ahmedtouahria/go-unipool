@@ -76,7 +76,7 @@ func main() {
 		log.Fatal(err)
 	}
 	actualGasPrice, _ := client.SuggestGasPrice(context.Background())
-	quote := quote.getQuote(tokenIn, tokenOut, "100000000000000000")
+	quote := quote.GetQuote(tokenIn, tokenOut, "100000000000000000")
 	fmt.Println("Minimum Minimum Liquidity:", minimumLiquidity)
 	fmt.Println("Token name:", name)
 	fmt.Println("Token Liquidity:", tokenEthReserveHumanReadable)

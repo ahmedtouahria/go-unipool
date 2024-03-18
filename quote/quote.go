@@ -148,7 +148,7 @@ type Quote struct {
 	Routing   string `json:"routing"`
 }
 
-func getQuote(tokenIn string, tokenOut string, amount string) *Quote {
+func GetQuote(tokenIn string, tokenOut string, amount string) *Quote {
 	url := "https://interface.gateway.uniswap.org/v2/quote"
 	payload := map[string]interface{}{
 		"tokenInChainId":     chain,
