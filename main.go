@@ -98,5 +98,6 @@ func main() {
 	fmt.Println("Avg gas price for a small tx:", quote.Quote.GasUseEstimate)
 	fmt.Println("Avg gas price for a small tx usd:", quote.Quote.GasUseEstimateUSD)
 	fmt.Println("1ETH =", UsdUnitPrice, "usd")
+	quote_p.GetDataSelles("0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c","2023-07-01T14:00:00Z","2023-07-01T16:00:00Z")
 
 }
