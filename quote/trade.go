@@ -85,24 +85,17 @@ func ExecuteGraphQLQuery(query *strings.Reader, apiKey string, token string) ([]
 	return body, nil
 }
 
-func GetDataSelles(smartContract string, timesmap int, MinTotalSelles int) error {
+func GetDataSelles(smartContract string, MinTotalSelles int) error {
 	var trade Response
 	isSelled := false
-	query := strings.NewReader("{\"query\":\"query MyQuery {\\n        EVM(dataset: archive, network: bsc) {\\n            buyside: DEXTradeByTokens(\\n                limit: {count: 30}\\n                orderBy: {descending: Block_Time}\\n                where: {Trade: {Currency: {SmartContract: {is: \\\"" + smartContract + "\\\"}}}, Block: {Date: {since: \\\"2023-07-01\\\", till: \\\"2023-08-01\\\"}}}\\n            ) {\\n                Block {\\n                    Time(interval: {in: days, count: 1})\\n                }\\n                volume: sum(of: Trade_Amount)\\n                distinctBuyer: count(distinct: Trade_Buyer)\\n                distinctSeller: count(distinct: Trade_Seller)\\n                distinctSender: count(distinct: Trade_Sender)\\n                distinctTransactions: count(distinct: Transaction_Hash)\\n                total_sales: count(\\n                    if: {Trade: {Side: {Currency: {SmartContract: {is: \\\"" + smartContract + "\\\"}}}}}\\n                )\\n                total_buys: count(\\n                    if: {Trade: {Currency: {SmartContract: {is: \\\"" + smartContract + "\\\"}}}}\\n                )\\n                total_count: count\\n                Trade {\\n                    Currency {\\n                        Name\\n                    }\\n                    Side {\\n                        Currency {\\n                            Name\\n                        }\\n                    }\\n                    high: Price(maximum: Trade_Price)\\n                    low: Price(minimum: Trade_Price)\\n                    open: Price(minimum: Block_Number)\\n                    close: Price(maximum: Block_Number)\\n                }\\n            }\\n        }\\n    }\",\"variables\":{}}")
+	query := strings.NewReader("{\"query\":\"query MyQuery {\\n        EVM(dataset: archive, network: eth) {\\n            buyside: DEXTradeByTokens(\\n                limit: {count: 30}\\n                orderBy: {descending: Block_Time}\\n                where: {Trade: {Currency: {SmartContract: {is: \\\"" + smartContract + "\\\"}}}, Block: {Date: {since: \\\"2023-07-01\\\", till: \\\"2023-08-01\\\"}}}\\n            ) {\\n                Block {\\n                    Time(interval: {in: days, count: 1})\\n                }\\n                volume: sum(of: Trade_Amount)\\n                distinctBuyer: count(distinct: Trade_Buyer)\\n                distinctSeller: count(distinct: Trade_Seller)\\n                distinctSender: count(distinct: Trade_Sender)\\n                distinctTransactions: count(distinct: Transaction_Hash)\\n                total_sales: count(\\n                    if: {Trade: {Side: {Currency: {SmartContract: {is: \\\"" + smartContract + "\\\"}}}}}\\n                )\\n                total_buys: count(\\n                    if: {Trade: {Currency: {SmartContract: {is: \\\"" + smartContract + "\\\"}}}}\\n                )\\n                total_count: count\\n                Trade {\\n                    Currency {\\n                        Name\\n                    }\\n                    Side {\\n                        Currency {\\n                            Name\\n                        }\\n                    }\\n                    high: Price(maximum: Trade_Price)\\n                    low: Price(minimum: Trade_Price)\\n                    open: Price(minimum: Block_Number)\\n                    close: Price(maximum: Block_Number)\\n                }\\n            }\\n        }\\n    }\",\"variables\":{}}")
 	// Execute the GraphQL query
-	body, err := ExecuteGraphQLQuery(query, "BQY8Asjo0kL3NFMwshSAIS0iF1l3Yg2S", "Bearer ory_at_m4EWphV-sh_l7Q3JJc4dnETUoa5Hu8kimgAPnXL0GH0.fFP-i9GyIYexQiPSYK4Um1gp6j2MeOMTJ2ohLpJkVYQ	")
+	body, err := ExecuteGraphQLQuery(query, "BQY8Asjo0kL3NFMwshSAIS0iF1l3Yg2S", "Bearer ory_at_m4EWphV-sh_l7Q3JJc4dnETUoa5Hu8kimgAPnXL0GH0.fFP-i9GyIYexQiPSYK4Um1gp6j2MeOMTJ2ohLpJkVYQ")
 	if err != nil {
 		return err
 	}
 	err = json.Unmarshal(body, &trade)
 	for _, buySide := range trade.Data.EVM.BuySide {
-		fmt.Println("Block Time:", buySide.Block.Time)
-		fmt.Println("Currency Name:", buySide.Trade.Currency.Name)
-		fmt.Println("Side Currency Name:", buySide.Trade.Side.Currency.Name)
-		fmt.Println("Total Count:", buySide.TotalCount)
-		fmt.Println("Total Sales:", buySide.TotalSales)
-		fmt.Println("Volume:", buySide.Volume)
-		fmt.Println("---------------------------------------------")
 		TotalSales, err := strconv.Atoi(buySide.TotalSales)
 		if err != nil {
 			fmt.Println("Error decoding response body:", err)
@@ -125,10 +118,11 @@ func GetDataSelles(smartContract string, timesmap int, MinTotalSelles int) error
 		return err
 	}
 	if isSelled {
-		_, err = fmt.Printf("\\n Not yet available selles")
-		if err != nil {
-			return err
-		}
+		fmt.Printf("\\This token has selles")
+
+	} else {
+		fmt.Printf("Not yet available selles\n")
+
 	}
 
 	return nil

@@ -33,6 +33,7 @@ func GetPoolInfo(address string){
 	}
 
 	token1, err := unipoolContract.Token1(nil)
+
 	if err != nil {
 		log.Fatal(err)
 	}
